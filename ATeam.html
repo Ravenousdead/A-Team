@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+        <style>
+        th,
+        td {
+        border: 1px solid black;
+        border-radius: 4px;
+        text-align: center;
+        width: 30px;
+		height: 75px;
+        background-color: White;
+        padding: 5px;
+        }
+        table {
+        margin-left: auto;
+        margin-right: auto;
+        }
+        </style>
+        <meta charset="UTF-8" />
+        <meta name="viewpoint" content="width=\, initial-scale=1.0" />
+        <title>A Team</title>
+        </head>
+
+        <body style="background-color: #44546A; text-align:center">
+        <h1 style="color: #D6DCE4"> <span id="characterName"></span></h1>
+        <h2 style="color: #D6DCE4"><span id="characterScore"></span></h2>
+        <table>
+        <tr id="tb_headers"></tr>
+        <tr id="tb_row_01"></tr>
+        <tr id="tb_row_02"></tr>
+        <tr id="tb_row_03"></tr>
+        <tr id="tb_row_04"></tr>
+        <tr id="tb_row_05"></tr>
+        </table>
+
+        <script>
+		var row01URL = "https://raider.io/characters/us/proudmoore/Valkula";
+		var row02URL = "https://raider.io/characters/us/moon-guard/Kuròmi";
+		var row03URL = "https://raider.io/characters/us/proudmoore/Zeltori";
+		var row04URL = "https://raider.io/characters/us/scarlet-crusade/Samsonknight";
+		var row05URL = "https://raider.io/characters/us/proudmoore/Kostility";
+		
+		var row01DungeonID = "15103";	//Cinderbrew Meadery
+		var row02DungeonID = "14882";	//Darkflame Cleft
+		var row03DungeonID = "800002";	//Mechagon Workshop
+		var row04DungeonID = "15452";	//Operation: Floodgate
+		var row05DungeonID = "14954";	//Priory of the Sacred Flame
+		var row06DungeonID = "8064";	//The Motherlode!!
+		var row07DungeonID = "14938";	//The Rookery
+		var row08DungeonID = "12841";	//Theater of Pain
+
+		function BuildPage(){
+		let div_01 = document.getElementById("tb_row_01");	
+        buildPlayerRow(row01URL, div_01);
+		let div_02 = document.getElementById("tb_row_02");
+        buildPlayerRow(row02URL, div_02);
+		let div_03 = document.getElementById("tb_row_03");
+        buildPlayerRow(row03URL, div_03);
+		let div_04 = document.getElementById("tb_row_04");
+        buildPlayerRow(row04URL, div_04);
+		let div_05 = document.getElementById("tb_row_05");
+        buildPlayerRow(row05URL, div_05);
+		}
+
+        function getApiUrl_Dungeons(url){
+        var urlArray = url.split("/");
+        var urlIndex = urlArray.indexOf("characters");
+
+        var region = "";
+        var realm = "";
+        var name = "";
+
+        region = urlArray[urlIndex + 1];
+        realm = urlArray[urlIndex + 2];
+        name = urlArray[urlIndex + 3];
+
+        api_url_dungeons = "https://raider.io/api/v1/characters/profile?region=" + region + "&realm=" + realm + "&name=" + name + "&fields=mythic_plus_best_runs";        
+        return api_url_dungeons;
+        }
+		
+        function getApiUrl_Player(url){
+        var urlArray = url.split("/");
+        var urlIndex = urlArray.indexOf("characters");
+
+        var region = "";
+        var realm = "";
+        var name = "";
+
+        region = urlArray[urlIndex + 1];
+        realm = urlArray[urlIndex + 2];
+        name = urlArray[urlIndex + 3];
+
+        api_url_player = "https://raider.io/api/v1/characters/profile?region=" + region + "&realm=" + realm + "&name=" + name + "&fields=mythic_plus_scores_by_season:current";
+		return api_url_player;
+        }
+		
+		async function buildPlayerRow(playerURL, playerDiv){
+		var api_url_dungeons = getApiUrl_Dungeons(playerURL);        
+		var response_dungeons = await fetch(api_url_dungeons);
+		var data_dungeons = await response_dungeons.json();
+		var api_url_player = getApiUrl_Player(playerURL);
+		var response_player = await fetch(api_url_player);
+		var data_player = await response_player.json();
+		
+		var bestDungeons = data_dungeons.mythic_plus_best_runs;
+		
+		//thumbnail
+		let cellThumbnail = document.createElement("td");
+		cellThumbnail.style.width = "60px"
+		cellThumbnail.style.backgroundImage = "url(" + data_player.thumbnail_url + ")";
+        playerDiv.appendChild(cellThumbnail);
+		//name
+		let cellName = document.createElement("td");
+		cellName.style.width = "120px"
+        let textName = document.createTextNode(data_player.name);
+        cellName.appendChild(textName);
+        playerDiv.appendChild(cellName);
+		//score
+		let cellScore = document.createElement("td");
+		cellScore.style.width = "80px"
+        let textScore = document.createTextNode(data_player.mythic_plus_scores_by_season[0].scores.all);
+        cellScore.appendChild(textScore);
+        playerDiv.appendChild(cellScore);
+		
+		//dungeons
+		for(var i = 0; i < bestDungeons.length; i++){		
+		let cellDungeon = document.createElement("td");
+		cellDungeon.style.width = "50px"
+		cellDungeon.style.backgroundImage = "url(" + bestDungeons[i].icon_url + ")";
+		cellDungeon.style.backgroundSize = "60px 60px";
+		cellDungeon.style.backgroundPosition = "top center";
+		cellDungeon.style.backgroundRepeat = "no-repeat";
+		// cellDungeon.style.color = "#FFFFFF";
+		// cellDungeon.style.fontSize = "20px";
+		cellDungeon.style.verticalAlign = "bottom";
+        let textDungeon = document.createTextNode(bestDungeons[i].score);
+        cellDungeon.appendChild(textDungeon);
+        playerDiv.appendChild(cellDungeon);
+		}
+		}
+			
+		BuildPage();
+        </script>
+        </body>
+
+</html>
