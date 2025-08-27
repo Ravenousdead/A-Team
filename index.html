@@ -34,22 +34,27 @@
         <tr id="tb_row_04"></tr>
         <tr id="tb_row_05"></tr>
         </table>
+		<label style="color: #D6DCE4" for="raiderPage">Notable Mentions</label>
+		<table>
+		<tr id="tb_row_06"></tr>
+		</table>
 
         <script>
-		var row01URL = "https://raider.io/characters/us/proudmoore/Valkula";
+		var row01URL = "https://raider.io/characters/us/wyrmrest-accord/Valkula";
 		var row02URL = "https://raider.io/characters/us/moon-guard/Kuròmi";
-		var row03URL = "https://raider.io/characters/us/proudmoore/Zeltori";
+		var row03URL = "https://raider.io/characters/us/proudmoore/Zelarin";
 		var row04URL = "https://raider.io/characters/us/scarlet-crusade/Samsonknight";
-		var row05URL = "https://raider.io/characters/us/proudmoore/Kostility";
+		var row05URL = "https://raider.io/characters/us/proudmoore/Frostalios";
+		var row06URL = "https://raider.io/characters/us/sargeras/M%C3%A1xwell";
 		
-		var row01DungeonID = "15103";	//Cinderbrew Meadery
-		var row02DungeonID = "14882";	//Darkflame Cleft
-		var row03DungeonID = "800002";	//Mechagon Workshop
+		var row01DungeonID = "15093";	//Ara-Kara, City of Echoes
+		var row02DungeonID = "16104";	//Eco-Dome Al'dani
+		var row03DungeonID = "12831";	//Halls of Atonement
 		var row04DungeonID = "15452";	//Operation: Floodgate
 		var row05DungeonID = "14954";	//Priory of the Sacred Flame
-		var row06DungeonID = "8064";	//The Motherlode!!
-		var row07DungeonID = "14938";	//The Rookery
-		var row08DungeonID = "12841";	//Theater of Pain
+		var row06DungeonID = "1000001";	//Tazavesh: So'leah's Gambit
+		var row07DungeonID = "1000000";	//Tazavesh: Streets of Wonder
+		var row08DungeonID = "14971";	//The Dawnbreaker
 
 		function BuildPage(){
 		let div_01 = document.getElementById("tb_row_01");	
@@ -62,6 +67,8 @@
         buildPlayerRow(row04URL, div_04);
 		let div_05 = document.getElementById("tb_row_05");
         buildPlayerRow(row05URL, div_05);
+		let div_06 = document.getElementById("tb_row_06");
+        buildPlayerRow(row06URL, div_06);
 		}
 
         function getApiUrl_Dungeons(url){
